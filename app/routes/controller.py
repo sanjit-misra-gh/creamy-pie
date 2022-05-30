@@ -1,10 +1,19 @@
+import imp
 from flask import Flask, render_template
 from flask import Blueprint
+from ..extensions import db
+from ..models.user import User
 
 controller = Blueprint('controller', __name__)
 
+@controller.route('/user/<name>')
+def create_user(name):
+    user = User(name=name)
+    db.session.add(user)
+    db.session.commit()
+    return 'User create successfully!!'
 
-@controller.route('/controller')
+@controller.route('/')
 def index():
     return(render_template('index.html'))
 
